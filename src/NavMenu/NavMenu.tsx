@@ -7,7 +7,11 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Button from '@material-ui/core/Button';
 
-export default (props: any) => (
+interface PropsShape {
+  OAuthURL: string
+}
+
+export default (props: PropsShape) => (
   <div>
     <AppBar>
       <StyledToolbar>
@@ -16,8 +20,9 @@ export default (props: any) => (
         </IconButton>
 
         <RightItems>
-          <Button color='inherit'>Log In</Button>
-          <Button color='inherit'>Sign Up</Button>
+          <StyledAnchorTag href={props.OAuthURL}>
+            <Button color='inherit'>Sign Up or Log In via Asana</Button>
+          </StyledAnchorTag>
         </RightItems>
 
         <RightItems>
@@ -42,4 +47,9 @@ const StyledToolbar = styled(Toolbar)`
 const RightItems = styled.div`
   display: flex;
   flex-flow: row wrap;
+`;
+
+const StyledAnchorTag = styled.a`
+  color: inherit;
+  text-decoration: none;
 `;
