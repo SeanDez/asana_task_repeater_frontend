@@ -29,6 +29,7 @@ console.log('allCookiesOnThisDomain :>> ', allCookiesOnThisDomain);
 const newState = nonce()();
 
 const OAuthURL = `${process.env.REACT_APP_ASANA_REDIRECT_URL_MINUS_STATE}&state=${newState}`;
+console.log('OAuthURL',OAuthURL);
 
 function keyIsPresent(obj: object, targetKey: string): boolean {
   const keyNames = Object.keys(obj);
@@ -93,14 +94,13 @@ async function passAuthCodeAndReceiveUserData(code: string, stateParam: string) 
   }
 }
 
-
-async function App() {
+function App() {
   const [userData, setUserData] = React.useState({});
 
-  if (cookieIsPresent(cookieNames.state) && keyIsPresent(queryParameters, 'code')) {
-    const fullData = await passAuthCodeAndReceiveUserData(queryParameters.code as string, queryParameters.state as string);
-    setUserData(fullData);
-  }
+  // if (cookieIsPresent(cookieNames.state) && keyIsPresent(queryParameters, 'code')) {
+  //   const fullData = await passAuthCodeAndReceiveUserData(queryParameters.code as string, queryParameters.state as string);
+  //   setUserData(fullData);
+  // }
 
   return (
     <BrowserRouter>
