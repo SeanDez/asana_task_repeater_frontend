@@ -13,6 +13,8 @@ import FeatureSection from './SalesView/FeatureSection';
 
 import NavMenu from './NavMenu/NavMenu';
 
+const { REACT_APP_HTTPS_BACKEND_DOMAIN, REACT_APP_ASANA_REDIRECT_URL_MINUS_STATE } = process.env;
+
 enum cookieNames {
   state = 'asana_priorState',
   session = 'asana_session'
@@ -28,7 +30,7 @@ console.log('allCookiesOnThisDomain :>> ', allCookiesOnThisDomain);
 
 const newState = nonce()();
 
-const OAuthURL = `${process.env.REACT_APP_ASANA_REDIRECT_URL_MINUS_STATE}&state=${newState}`;
+const OAuthURL = `${REACT_APP_ASANA_REDIRECT_URL_MINUS_STATE}&state=${newState}`;
 console.log('OAuthURL',OAuthURL);
 
 function keyIsPresent(obj: object, targetKey: string): boolean {
@@ -68,7 +70,7 @@ async function passAuthCodeAndReceiveUserData(code: string, stateParam: string) 
     throw new Error(`${cookieNames.state} not found`);
   }
 
-  const authCodeEndpoint = `${process.env.REACT_APP_HTTPS_BACKEND_DOMAIN}/authCode`;
+  const authCodeEndpoint = `${REACT_APP_HTTPS_BACKEND_DOMAIN}/oauth/`;
   const requestBody = { code, state: stateParam };
 
   if (statesMatch) {
