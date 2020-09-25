@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -8,7 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Button from '@material-ui/core/Button';
 
 interface PropsShape {
-  OAuthURL: string
+  OAuthURL: string;
 }
 
 export default (props: PropsShape) => (
@@ -19,15 +20,11 @@ export default (props: PropsShape) => (
           <MenuIcon />
         </IconButton>
 
+        {  }
         <RightItems>
           <StyledAnchorTag href={props.OAuthURL}>
             <Button color='inherit'>Sign Up or Log In via Asana</Button>
           </StyledAnchorTag>
-        </RightItems>
-
-        <RightItems>
-          <h6>Hello, nameHere</h6>
-          <Button color='inherit'>Log Out</Button>
         </RightItems>
       </StyledToolbar>
     </AppBar>

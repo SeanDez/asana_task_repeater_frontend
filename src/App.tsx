@@ -1,47 +1,49 @@
-import React from 'react';
-import 'isomorphic-fetch';
-import 'es6-promise';
-
 import './App.scss';
-import queryString from 'query-string';
-import { BrowserRouter } from 'react-router-dom';
+import 'es6-promise';
+import 'isomorphic-fetch';
 import Cookies from 'js-cookie';
 import nonce from 'nonce';
+import queryString from 'query-string';
+import React, { useState, useEffect } from 'react';
 
-import SalesDeck from './SalesView/SalesDeck';
-import FeatureSection from './SalesView/FeatureSection';
-
-import NavMenu from './NavMenu/NavMenu';
+import AuthView from './AuthView/AuthView';
+import Loader from './Loader';
+import VisitorView from './VisitorView/VisitorView';
 
 const { REACT_APP_HTTPS_BACKEND_DOMAIN, REACT_APP_ASANA_REDIRECT_URL_MINUS_STATE } = process.env;
 
 enum cookieNames {
+  email = 'asana_email_encrypted',
   state = 'asana_priorState',
   session = 'asana_session'
 }
 
 // grab query parameters
 /* eslint-disable no-restricted-globals */
-const queryParameters = queryString.parse(location.search);
-console.log('queryParameters', queryParameters);
+const queryParameters = Object(queryString.parse(location.search));
+console.log('queryParameters', queryParameters); // asana_email logs to browser console
+
+// save asana_email jwt to a cookie if it is passed as a query parameter
+if (cookieNames.email in queryParameters) {
+  Cookies.set(cookieNames.email, queryParameters[cookieNames.email]!);
+} else {
+  console.log('if block not hit')
+}
 
 const allCookiesOnThisDomain = Cookies.getJSON();
 console.log('allCookiesOnThisDomain :>> ', allCookiesOnThisDomain);
-
-const newState = nonce()();
-
-const OAuthURL = `${REACT_APP_ASANA_REDIRECT_URL_MINUS_STATE}&state=${newState}`;
-console.log('OAuthURL',OAuthURL);
 
 function keyIsPresent(obj: object, targetKey: string): boolean {
   const keyNames = Object.keys(obj);
   return keyNames.some(key => key === targetKey);
 }
 
-function cookieIsPresent(keyName: string) {
-  const value = Cookies.getJSON(keyName);
-  return typeof value !== 'undefined';
+function cookieIsPresent(keyName: string): boolean {
+  const cookieValue = Cookies.getJSON(keyName);
+  return typeof cookieValue !== 'undefined';
 }
+
+const newState = nonce()();
 
 /*
   Intent is to set a new, updated state value if there is no auth code being sent, or the app is first loaded and no prior state was previously set
@@ -98,27 +100,32 @@ async function passAuthCodeAndReceiveUserData(code: string, stateParam: string) 
 
 function App() {
   const [userData, setUserData] = React.useState({});
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // if (cookieIsPresent(cookieNames.state) && keyIsPresent(queryParameters, 'code')) {
   //   const fullData = await passAuthCodeAndReceiveUserData(queryParameters.code as string, queryParameters.state as string);
   //   setUserData(fullData);
   // }
 
-  return (
-    <BrowserRouter>
-      <div className="App">
-        <header className="App-header">
-          <NavMenu OAuthURL={OAuthURL} />
-        </header>
+  // set isAuthenticated to true if loggedIn cookie is present
+  useEffect(() => {
+    const emailCookieFound = cookieIsPresent(cookieNames.email);
+    if (emailCookieFound) { setIsAuthenticated(true); }
+  }, []);
 
-        <main>
-          <SalesDeck />
-          <FeatureSection />
-        </main>
-      </div>
-    </BrowserRouter>
-
-  );
+  // if asana_loggedIn cookie is present, switch to auth view and fetch auth data
+  const userDataHasLoaded = Object.keys(userData).length > 0;
+  if (isAuthenticated && userDataHasLoaded === false) {
+    return <Loader />
+  } else if (isAuthenticated && userDataHasLoaded) {
+    return <AuthView setIsAuthenticated={setIsAuthenticated} />
+  } else {
+    return (
+      <VisitorView 
+        newState={newState}
+      />
+    )
+  }
 }
 
 export default App;

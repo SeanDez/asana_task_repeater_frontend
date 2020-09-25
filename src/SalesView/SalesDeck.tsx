@@ -3,14 +3,12 @@ import styled from 'styled-components';
 
 export default (props: any) => (
   <OuterContainer>
-    <h3>Sales Deck</h3>
-    <h3>Sales Deck</h3>
-    <h3>Sales Deck</h3>
-    <h3>Sales Deck</h3>
+    <h2>Automate Repetitive Task Posting</h2>
+    <p>Asana Task Repeater handles the repetitive parts of reposting tasks on a regular basis, leaving you free to manager you team and project.</p>
   </OuterContainer>
 )
 
-const OuterContainer = styled.div`
+const OuterContainer = styled.section`
   background-color: aqua;
   margin-top: 70px;
   width: 100vw;
