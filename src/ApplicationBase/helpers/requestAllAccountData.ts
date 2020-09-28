@@ -1,10 +1,9 @@
 import buildUrl from 'build-url';
 import 'es6-promise';
-import Cookies from 'js-cookie';
 import 'isomorphic-fetch';
-import envTypeGuarded from '../../shared/envVariablesTypeGuarded';
+import envTyped from '../../shared/envVariablesTyped';
 
-const { REACT_APP_HTTPS_BACKEND_DOMAIN } = envTypeGuarded;
+const { REACT_APP_HTTPS_BACKEND_DOMAIN } = envTyped;
 
 async function requestAllAccountData() {
   const allAccountDataEndpoint = buildUrl(REACT_APP_HTTPS_BACKEND_DOMAIN, {

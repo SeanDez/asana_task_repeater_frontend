@@ -11,8 +11,6 @@ import Loader from '../Loader';
 import requestAllAccountData from './helpers/requestAllAccountData';
 import VisitorView from '../VisitorView/VisitorView';
 
-const { REACT_APP_HTTPS_BACKEND_DOMAIN, REACT_APP_ASANA_REDIRECT_URL_MINUS_STATE } = process.env;
-
 enum cookieNames {
   email = 'asana_email_encrypted',
   state = 'asana_state',
@@ -30,11 +28,6 @@ if (cookieNames.email in queryParameters) {
   console.log('asana email value saved to cookie')
 } else {
   console.log('if block not hit. no asana_email key saved')
-}
-
-function keyIsPresent(obj: object, targetKey: string): boolean {
-  const keyNames = Object.keys(obj);
-  return keyNames.some(key => key === targetKey);
 }
 
 function cookieIsPresent(keyName: string): boolean {
@@ -67,56 +60,21 @@ if (typeof allCookiesOnThisDomain[cookieNames.state] === 'undefined') {
   setStateCookie(allCookiesOnThisDomain);
 }
 
-/*
-  Passes the auth code to the backend endpoint
-  The new or old user's account data is then returned
-*/
-async function passAuthCodeAndReceiveUserData(code: string, stateParam: string) {
-  let statesMatch: boolean;
-  if (cookieIsPresent(cookieNames.state)) {
-    const priorState = Cookies.getJSON(cookieNames.state);
-    statesMatch = priorState === stateParam;
-  } else {
-    throw new Error(`${cookieNames.state} not found`);
-  }
-
-  const authCodeEndpoint = `${REACT_APP_HTTPS_BACKEND_DOMAIN}/oauth/`;
-  const requestBody = { code, state: stateParam };
-
-  if (statesMatch) {
-    try {
-      const response = await fetch(authCodeEndpoint, {
-        method: 'post',
-        mode: 'cors',
-        credentials: 'include', // needed for cookie setting by Express.js API
-        headers: {
-          'content-type': 'application/json',
-          'access-control-allow-origin': "*"
-        },
-        body: JSON.stringify(requestBody)
-      });
-  
-      const userData = await response.json();
-      return userData;
-    } catch (error) {
-      throw new Error(error);
-    }
-  } else {
-    console.log('Authorization failed, state param does not match cookie priorState');
-  }
-}
-
 function App() {
-  const [userData, setUserData] = React.useState({});
+  const [accountData, setAccountData] = React.useState({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // under loading conditions only, request the account's full dataset
   useEffect(() => {
-    const numberOfUserDataKeys = Object.keys(Object(userData)).length;
-    if (numberOfUserDataKeys > 0 && isAuthenticated === true) {
-      
+    async function fetchAllAccountDataIfInLoadingState() {
+      const numberOfUserDataKeys = Object.keys(Object(accountData)).length;
+      if (numberOfUserDataKeys === 0 && isAuthenticated === true) {
+        const fullAccountData = await requestAllAccountData();
+        setAccountData(fullAccountData)
+      }
     }
-  }, [isAuthenticated]);
+    fetchAllAccountDataIfInLoadingState();
+  }, [isAuthenticated, accountData]);
 
   // set isAuthenticated to true if loggedIn cookie is present
   useEffect(() => {
@@ -133,7 +91,7 @@ function App() {
   })
 
   // if asana_loggedIn cookie is present, switch to auth view and fetch auth data
-  const userDataHasLoaded = Object.keys(userData).length > 0;
+  const userDataHasLoaded = Object.keys(accountData).length > 0;
   if (isAuthenticated && userDataHasLoaded === false) {
     return <Loader />
   } else if (isAuthenticated && userDataHasLoaded) {
