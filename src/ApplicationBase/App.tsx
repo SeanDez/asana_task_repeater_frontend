@@ -6,9 +6,10 @@ import nonce from 'nonce';
 import queryString from 'query-string';
 import React, { useState, useEffect } from 'react';
 
-import AuthView from './AuthView/AuthView';
-import Loader from './Loader';
-import VisitorView from './VisitorView/VisitorView';
+import AuthView from '../AuthView/AuthView';
+import Loader from '../Loader';
+import requestAllAccountData from './helpers/requestAllAccountData';
+import VisitorView from '../VisitorView/VisitorView';
 
 const { REACT_APP_HTTPS_BACKEND_DOMAIN, REACT_APP_ASANA_REDIRECT_URL_MINUS_STATE } = process.env;
 
@@ -18,9 +19,6 @@ enum cookieNames {
   session = 'asana_session'
 }
 
-/*
-  query parameter manipulation of asana_email happens only once, when the back end sends an encrypted jwt after oauth
-*/
 // grab query parameters
 /* eslint-disable no-restricted-globals */
 const queryParameters = Object(queryString.parse(location.search));
@@ -29,8 +27,9 @@ console.log('queryParameters', queryParameters); // asana_email logs to browser 
 // save asana_email jwt to a cookie if it is passed as a query parameter
 if (cookieNames.email in queryParameters) {
   Cookies.set(cookieNames.email, queryParameters[cookieNames.email]!);
+  console.log('asana email value saved to cookie')
 } else {
-  console.log('if block not hit')
+  console.log('if block not hit. no asana_email key saved')
 }
 
 function keyIsPresent(obj: object, targetKey: string): boolean {
@@ -45,12 +44,14 @@ function cookieIsPresent(keyName: string): boolean {
 
 const newStateValue = nonce()();
 
-/*
-  Intent is to set a new, updated state value if there is no auth code being sent, or the app is first loaded and no prior state was previously set
-*/
+
+
 const allCookiesOnThisDomain = Cookies.getJSON();
 console.log('allCookiesOnThisDomain :>> ', allCookiesOnThisDomain);
 
+/*
+  Set a new, updated state value if there is no auth code being sent, or the app is first loaded and no prior state was previously set
+*/
 function setStateCookie(allCookies: object): void {
   const stateCookiePresent: boolean = cookieIsPresent(cookieNames.state);
   
@@ -65,7 +66,6 @@ function setStateCookie(allCookies: object): void {
 if (typeof allCookiesOnThisDomain[cookieNames.state] === 'undefined') {
   setStateCookie(allCookiesOnThisDomain);
 }
-
 
 /*
   Passes the auth code to the backend endpoint
@@ -110,10 +110,13 @@ function App() {
   const [userData, setUserData] = React.useState({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // if (cookieIsPresent(cookieNames.state) && keyIsPresent(queryParameters, 'code')) {
-  //   const fullData = await passAuthCodeAndReceiveUserData(queryParameters.code as string, queryParameters.state as string);
-  //   setUserData(fullData);
-  // }
+  // under loading conditions only, request the account's full dataset
+  useEffect(() => {
+    const numberOfUserDataKeys = Object.keys(Object(userData)).length;
+    if (numberOfUserDataKeys > 0 && isAuthenticated === true) {
+      
+    }
+  }, [isAuthenticated]);
 
   // set isAuthenticated to true if loggedIn cookie is present
   useEffect(() => {
