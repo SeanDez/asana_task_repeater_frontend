@@ -14,10 +14,13 @@ const { REACT_APP_HTTPS_BACKEND_DOMAIN, REACT_APP_ASANA_REDIRECT_URL_MINUS_STATE
 
 enum cookieNames {
   email = 'asana_email_encrypted',
-  state = 'asana_priorState',
+  state = 'asana_state',
   session = 'asana_session'
 }
 
+/*
+  query parameter manipulation of asana_email happens only once, when the back end sends an encrypted jwt after oauth
+*/
 // grab query parameters
 /* eslint-disable no-restricted-globals */
 const queryParameters = Object(queryString.parse(location.search));
@@ -30,9 +33,6 @@ if (cookieNames.email in queryParameters) {
   console.log('if block not hit')
 }
 
-const allCookiesOnThisDomain = Cookies.getJSON();
-console.log('allCookiesOnThisDomain :>> ', allCookiesOnThisDomain);
-
 function keyIsPresent(obj: object, targetKey: string): boolean {
   const keyNames = Object.keys(obj);
   return keyNames.some(key => key === targetKey);
@@ -43,21 +43,29 @@ function cookieIsPresent(keyName: string): boolean {
   return typeof cookieValue !== 'undefined';
 }
 
-const newState = nonce()();
+const newStateValue = nonce()();
 
 /*
   Intent is to set a new, updated state value if there is no auth code being sent, or the app is first loaded and no prior state was previously set
 */
-(function setStateCookie(allCookies: object): void {
+const allCookiesOnThisDomain = Cookies.getJSON();
+console.log('allCookiesOnThisDomain :>> ', allCookiesOnThisDomain);
+
+function setStateCookie(allCookies: object): void {
   const stateCookiePresent: boolean = cookieIsPresent(cookieNames.state);
   
   const queryParamKeys: string[] = Object.keys(queryParameters);
   const codeQueryParamPresent: boolean = queryParamKeys.some(keyName => keyName === 'code');
   
   if (stateCookiePresent === false || codeQueryParamPresent === false) {
-    Cookies.set(cookieNames.state, newState)
+    Cookies.set(cookieNames.state, newStateValue)
   }
-})(allCookiesOnThisDomain);
+}
+
+if (typeof allCookiesOnThisDomain[cookieNames.state] === 'undefined') {
+  setStateCookie(allCookiesOnThisDomain);
+}
+
 
 /*
   Passes the auth code to the backend endpoint
@@ -113,6 +121,14 @@ function App() {
     if (emailCookieFound) { setIsAuthenticated(true); }
   }, []);
 
+  // set a new state cookie if none is present
+  useEffect(() => {
+    const stateCookieFound = cookieIsPresent(cookieNames.state);
+    if (stateCookieFound === false) {
+      Cookies.set(cookieNames.state, newStateValue);
+    }
+  })
+
   // if asana_loggedIn cookie is present, switch to auth view and fetch auth data
   const userDataHasLoaded = Object.keys(userData).length > 0;
   if (isAuthenticated && userDataHasLoaded === false) {
@@ -122,7 +138,8 @@ function App() {
   } else {
     return (
       <VisitorView 
-        newState={newState}
+        newStateValue={newStateValue}
+        allCookiesOnThisDomain={allCookiesOnThisDomain}
       />
     )
   }

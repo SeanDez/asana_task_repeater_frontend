@@ -16,8 +16,7 @@ export default ({ setIsAuthenticated }: PropsShape) => {
       </header>
 
       <main>
-
-
+        
       </main>
     </div>
   )

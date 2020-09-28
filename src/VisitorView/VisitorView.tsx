@@ -6,12 +6,13 @@ import VisitorNav from '../NavMenu/VisitorNav';
 const { REACT_APP_ASANA_REDIRECT_URL_MINUS_STATE } = process.env;
 
 interface PropsShape {
-  newState: number;
+  newStateValue: number;
+  allCookiesOnThisDomain: any;
 }
 
-export default ({ newState }: PropsShape) => {
+export default ({ newStateValue, allCookiesOnThisDomain }: PropsShape) => {
 
-  const OAuthURL = `${REACT_APP_ASANA_REDIRECT_URL_MINUS_STATE}&state=${newState}`;
+  const OAuthURL = `${REACT_APP_ASANA_REDIRECT_URL_MINUS_STATE}&state=${newStateValue}`;
   console.log('OAuthURL',OAuthURL);
 
   return (
@@ -23,7 +24,9 @@ export default ({ newState }: PropsShape) => {
       </header>
 
       <main>
-        <SalesDeck />
+        <SalesDeck
+          allCookiesOnThisDomain={allCookiesOnThisDomain}
+        />
         <FeatureSection />
       </main>
     </div>
