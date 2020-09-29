@@ -64,24 +64,7 @@ function App() {
   const [accountData, setAccountData] = React.useState({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // under loading conditions only, request the account's full dataset
-  useEffect(() => {
-    async function fetchAllAccountDataIfInLoadingState() {
-      const numberOfUserDataKeys = Object.keys(Object(accountData)).length;
-      if (numberOfUserDataKeys === 0 && isAuthenticated === true) {
-        const fullAccountData = await requestAllAccountData();
-        setAccountData(fullAccountData)
-      }
-    }
-    fetchAllAccountDataIfInLoadingState();
-  }, [isAuthenticated, accountData]);
-
-  // set isAuthenticated to true if loggedIn cookie is present
-  useEffect(() => {
-    const emailCookieFound = cookieIsPresent(cookieNames.email);
-    if (emailCookieFound) { setIsAuthenticated(true); }
-  }, []);
-
+  
   // set a new state cookie if none is present
   useEffect(() => {
     const stateCookieFound = cookieIsPresent(cookieNames.state);
@@ -89,8 +72,27 @@ function App() {
       Cookies.set(cookieNames.state, newStateValue);
     }
   })
+  
+  // set isAuthenticated to true if email cookie is present (means user has active session)
+  useEffect(() => {
+    const emailCookieFound = cookieIsPresent(cookieNames.email);
+    if (emailCookieFound) { setIsAuthenticated(true); }
+  }, []);
+  
+  // under loading conditions only, request the account's full dataset
+  useEffect(() => {
+    async function fetchAllAccountDataIfInLoadingState() {
+      const numberOfUserDataKeys = Object.keys(Object(accountData)).length;
+      if (numberOfUserDataKeys === 0 && isAuthenticated === true) {
+        const fullAccountData = await requestAllAccountData();
+        console.log('fullAccountData', fullAccountData);
+        setAccountData(fullAccountData);
+      }
+    }
+    fetchAllAccountDataIfInLoadingState();
+  }, [isAuthenticated, accountData]);
 
-  // if asana_loggedIn cookie is present, switch to auth view and fetch auth data
+  // return views for either visitors, loading state, or auth user
   const userDataHasLoaded = Object.keys(accountData).length > 0;
   if (isAuthenticated && userDataHasLoaded === false) {
     return <Loader />

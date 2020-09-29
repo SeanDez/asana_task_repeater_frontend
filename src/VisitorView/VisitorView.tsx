@@ -3,7 +3,8 @@ import SalesDeck from '../SalesView/SalesDeck';
 import FeatureSection from '../SalesView/FeatureSection';
 import VisitorNav from '../NavMenu/VisitorNav';
 
-const { REACT_APP_ASANA_REDIRECT_URL_MINUS_STATE } = process.env;
+
+const { REACT_APP_ASANA_REDIRECT_URL_MINUS_STATE } = process.env as { [key: string]: string };
 
 interface PropsShape {
   newStateValue: number;

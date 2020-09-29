@@ -1,0 +1,42 @@
+import fsJetpack from 'fs-jetpack';
+import path from 'path';
+
+const projectRootFolder = path.join(__dirname, '../../');
+const envFilePath = path.join(projectRootFolder, '.env');
+
+// slurp the whole file as a long string
+// split by new line
+const fileContents = fsJetpack.read(envFilePath, 'utf8');
+
+if (typeof fileContents === 'undefined') {
+  throw new Error('no .env file or no keys found in file');
+}
+
+const fileContentsByLine = fileContents.split(/\n/);
+
+// kick out bad lines
+const kVPairStrings = fileContentsByLine.filter((line: string) => {
+  if (line === '' || /^#/.test(line)) {
+    return false;
+  }
+
+  return true;
+});
+
+// key each kv pair to an object property
+const envVariables: { [k: string]: string } = {};
+kVPairStrings.forEach((kVPairString: string) => {
+  const arrayPair = kVPairString.split('=');
+  const [envKey, envValue] = arrayPair;
+  envVariables[envKey] = envValue;
+});
+
+// console.log('envVariables', envVariables);
+
+// throw if no env variables
+const numberOfEnvKeys = Object.keys(envVariables).length;
+if (numberOfEnvKeys === 0) {
+  throw new Error('.env file either missing or has no key/value pairs');
+}
+
+export default envVariables;
