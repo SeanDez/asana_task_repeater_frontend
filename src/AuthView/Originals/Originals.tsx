@@ -4,13 +4,15 @@ import lodash from 'lodash';
 import IAccountData from '../IAccountData';
 import { IProjectWithSortedTasks } from './IProjectWithSortedTasks';
 import { ProjectData } from './ProjectData';
+import { ITask } from './ITask';
+import { RepeatRuleAdder } from './RepeatRuleAdder';
 
 interface PropsShape {
   accountData: IAccountData;
 }
 
 export default ({ accountData }: PropsShape) => {
-  const [projectTaskData, setProjectTaskData] = useState({});
+  const [projectTaskData, setProjectTaskData] = useState<IProjectWithSortedTasks[]>([]);
 
   /*
     aggregate data into project.tasks
@@ -19,26 +21,38 @@ export default ({ accountData }: PropsShape) => {
   useEffect(() => {
     const projectData = new ProjectData(accountData);
     const organizedProjectTaskData: IProjectWithSortedTasks[] = projectData.organizeAndFilter();
-    console.log('organizedProjectTaskData :>> ', organizedProjectTaskData);
     setProjectTaskData(organizedProjectTaskData);
   }, [accountData])
 
-/*
-  project names are the headings
-  tasks are the items
-*/
+  /*
+    project names are the headings
+    tasks are the items
+  */
   return (
     <OuterContainer>
-      <h2>Originals here</h2>
-      <h2>Originals here</h2>
-      <h2>Originals here</h2>
-      <h2>Originals here</h2>
-      <h2>Originals here</h2>
-      <h2>Originals here</h2>
+       { projectTaskData.map(((projectAndTasks: IProjectWithSortedTasks) => (
+         <div key={projectAndTasks.gid}>
+           <h4>{projectAndTasks.name}</h4>
+           <hr />
+           <ul>
+           { projectAndTasks.tasks.map((task: ITask) => (
+             <li key={task.gid}>
+               <p>{task.name}</p>
+               <p>{task.due_on}</p>
+               {/* <p>{task.notes}</p> */}
+               <p>{task.tags}</p>
+               <RepeatRuleAdder 
+                taskGid={task.gid}
+               />
+             </li>
+           )) }
+           </ul>
+         </div>
+       ))) }
     </OuterContainer>
   )
 }
 
-const OuterContainer = styled.div`
+const OuterContainer = styled.section`
   border: 2px dashed yellow;
 `;

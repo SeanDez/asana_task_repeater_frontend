@@ -11,6 +11,12 @@ give an option to set up a repeater
   setup Ui code to turn the state into visuals
 
 
+// new repeater
+new rule modal on click
+rule options are offered (number, unit, start)
+fetch request is written
+rule added (and error) snackbar
+
 
 setup 50 task per page limit
 

@@ -10,11 +10,9 @@ export class ProjectData {
   */
   public organizeAndFilter() {
     const projectsFormatted: IProjectWithSortedTasks[] = this.formatProjects();
-    console.log('projectsFormatted :>> ', projectsFormatted);
 
     const projectsWithMatchingTasks: IProjectWithSortedTasks[] = projectsFormatted
       .map((formattedProject: IProjectWithSortedTasks) => this.loadAllMatchingTasks(formattedProject));
-    console.log('projectsWithMatchingTasks :>> ', projectsWithMatchingTasks);
 
     const nonemptyProjects = projectsWithMatchingTasks.filter((project: IProjectWithSortedTasks) => project.tasks.length > 0);
     
