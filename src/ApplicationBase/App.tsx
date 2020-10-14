@@ -10,6 +10,7 @@ import AuthView from '../AuthView/AuthView';
 import Loader from '../Loader';
 import requestAllAccountData from './helpers/requestAllAccountData';
 import VisitorView from '../VisitorView/VisitorView';
+import IAccountData from '../AuthView/IAccountData';
 
 enum cookieNames {
   email = 'asana_email_encrypted',
@@ -61,7 +62,7 @@ if (typeof allCookiesOnThisDomain[cookieNames.state] === 'undefined') {
 }
 
 function App() {
-  const [accountData, setAccountData] = React.useState({});
+  const [accountData, setAccountData] = React.useState<IAccountData | {}>({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   
@@ -96,8 +97,11 @@ function App() {
   const userDataHasLoaded = Object.keys(accountData).length > 0;
   if (isAuthenticated && userDataHasLoaded === false) {
     return <Loader />
-  } else if (isAuthenticated && userDataHasLoaded) {
-    return <AuthView setIsAuthenticated={setIsAuthenticated} />
+  } else if (isAuthenticated && userDataHasLoaded && accountData) {
+    return <AuthView 
+            setIsAuthenticated={setIsAuthenticated} 
+            accountData={accountData as IAccountData}
+          />
   } else {
     return (
       <VisitorView 

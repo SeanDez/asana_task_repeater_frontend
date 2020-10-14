@@ -1,0 +1,28 @@
+
+// originals page
+show each project heading
+show each task heading
+give an option to set up a repeater
+  repeat every X  (days / weeks / months) starting on {calendar}
+
+  X get all headings / project names
+  X fit tasks to them
+  X setup a useEffect to capture this data and put it into local state
+  setup Ui code to turn the state into visuals
+
+
+
+setup 50 task per page limit
+
+
+
+repeater logic
+
+
+
+---------------
+
+displaying data in auth view
+
+headings: a useEffect updates state for project headings
+tasks: a useEffect updates state for tasks

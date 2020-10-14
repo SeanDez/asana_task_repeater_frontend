@@ -13,7 +13,7 @@ interface PropsShape {
 }
 
 export default (props: PropsShape) => (
-  <div>
+  <OuterContainer>
     <AppBar>
       <StyledToolbar>
         <IconButton color="inherit">
@@ -28,8 +28,12 @@ export default (props: PropsShape) => (
         </RightItems>
       </StyledToolbar>
     </AppBar>
-  </div>
+  </OuterContainer>
 );
+
+const OuterContainer = styled.div`
+  margin-bottom: 60px;
+`;
 
 const StyledToolbar = styled(Toolbar)`
   display: flex;
