@@ -6,6 +6,7 @@ import { IProjectWithSortedTasks } from './IProjectWithSortedTasks';
 import { ProjectData } from './ProjectData';
 import { ITask } from './ITask';
 import { RepeatRuleAdder } from './RepeatRuleAdder';
+import "react-datetime/css/react-datetime.css";
 
 interface PropsShape {
   accountData: IAccountData;
@@ -41,7 +42,8 @@ export default ({ accountData }: PropsShape) => {
                <p>{task.due_on}</p>
                {/* <p>{task.notes}</p> */}
                <p>{task.tags}</p>
-               <RepeatRuleAdder 
+               <RepeatRuleAdder
+                projectGid={projectAndTasks.gid}
                 taskGid={task.gid}
                />
              </li>

@@ -1,8 +1,10 @@
-import React from 'react';
-import moment from 'moment';
 import buildUrl from 'build-url';
+import moment from 'moment';
+import React from 'react';
+import DateTime from 'react-datetime';
+import Cookies from 'js-cookie';
 
-const { REACT_APP_BACKEND_DOMAIN } = process.env;
+const { REACT_APP_HTTPS_BACKEND_DOMAIN } = process.env;
 
 interface SnackbarData {
   status: string;
@@ -12,20 +14,23 @@ interface SnackbarData {
 /*
   sends a fetch request to backend API to create a new repeater rule in the database
 */
-async function createNewRepeatRule(gid: string, timeInterval: number, timeUnit: string, startDate: string): Promise<SnackbarData> {
-  const ruleEndpoint = buildUrl(REACT_APP_BACKEND_DOMAIN!, {
-    path: '/repeatRules/add',
+async function createNewRepeatRule(projectGid: string, taskGid: string, timeInterval: number, timeUnit: string, startDate: string): Promise<SnackbarData> {
+  const ruleEndpoint = buildUrl(REACT_APP_HTTPS_BACKEND_DOMAIN!, {
+    path: '/repeat-rules/add',
   });
 
-  const body = JSON.stringify({ gid, timeInterval, timeUnit, startDate })
+  const asana_email_encrypted = Cookies.get('asana_email_encrypted')!;
+
+  const body = JSON.stringify({ projectGid, taskGid, timeInterval, timeUnit, startDate })
 
   try {
     const response = await fetch(ruleEndpoint, {
       method: 'post',
       mode: 'cors',
-      headers: {
+      headers: new Headers({
         'content-type': 'application/json',
-      },
+        asana_email_encrypted,
+      }),
       body
     });
 
@@ -41,14 +46,14 @@ async function createNewRepeatRule(gid: string, timeInterval: number, timeUnit: 
 }
 
 
-export function RepeatRuleAdder({ taskGid }: any) {
+export function RepeatRuleAdder({ projectGid, taskGid }: any) {
   const [addRuleView, setAddRuleView] = React.useState(false);
   const [timeInterval, setTimeInterval] = React.useState<number>(2)
   enum TimeUnits { days = 'days', weeks = 'weeks', months = 'months' };
   const [timeUnit, setTimeUnit] = React.useState<string>(TimeUnits.weeks);
 
   const today: string = moment().format('YYYY-MM-DD');
-  const [startDate, setStartDate] = React.useState<string>(today);
+  const [startDateTime, setStartDateTime] = React.useState<string>(today);
   const [snackbar, setSnackbar] = React.useState({});
 
   if (addRuleView === false) {
@@ -91,11 +96,15 @@ export function RepeatRuleAdder({ taskGid }: any) {
           </span>
 
           <span>Start Date: </span>
-          <input 
-            type="date" 
-            onBlur={e => setStartDate(e.target.value)} 
-            defaultValue={today}
+          <DateTime
+            value={startDateTime}
+            onChange={(e: any) => setStartDateTime(e)}
           />
+          {/* <input 
+            type="date" 
+            onBlur={e => setStartDateTime(e.target.value)} 
+            defaultValue={today}
+          /> */}
         </div>
 
         <button onClick={e => { 
@@ -104,7 +113,7 @@ export function RepeatRuleAdder({ taskGid }: any) {
         }}>X Close</button>
         <button onClick={async e => { 
           e.preventDefault();
-          const snackbarData: SnackbarData = await createNewRepeatRule(taskGid, timeInterval, timeUnit, startDate);
+          const snackbarData: SnackbarData = await createNewRepeatRule(projectGid, taskGid, timeInterval, timeUnit, startDateTime);
           setSnackbar(snackbarData);
           console.log(snackbar);
         }}>Create</button>
