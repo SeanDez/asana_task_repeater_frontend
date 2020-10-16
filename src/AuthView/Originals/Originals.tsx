@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import lodash from 'lodash';
-import IAccountData from '../IAccountData';
+import IAccountData from '../interfaces/IAccountData';
 import { IProjectWithSortedTasks } from './IProjectWithSortedTasks';
 import { ProjectData } from './ProjectData';
 import { ITask } from './ITask';

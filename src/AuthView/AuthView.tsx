@@ -1,40 +1,26 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
 
 import AuthNav from '../NavMenu/AuthNav';
 import Originals from './Originals/Originals';
-import IAccountData from './IAccountData';
-
-interface ProjectConpact {
-  gid: string;
-  name: string;
-  resource_type?: 'project'
-}
-
-interface EnhancedTask {
-  gid: string;
-  name: string;
-  notes: string;
-  due_on: string | null;
-  tags: string[];
-  projects: ProjectConpact[]
-}
-
-interface AccountData {
-  projectCompacts: ProjectConpact[];
-  tasksEnhanced: EnhancedTask[];
-}
+import IAccountData from './interfaces/IAccountData';
+import RepeatRules from './RepeatRules/RepeatRules';
 
 interface PropsShape {
   setIsAuthenticated: Function;
   accountData: IAccountData;
 }
 
+/*
+  Holds navigation and main section of account area
+
+  Also controls data flow for data that may overlap sections
+*/
 export default ({ setIsAuthenticated, accountData }: PropsShape) => {
   const history = useHistory();
   const location = useLocation();
 
-  React.useEffect(() => {
+  useEffect(() => {
     console.log(location);
     location.pathname === '/' && history.push('/originals');
   }, [location, history]);
@@ -51,6 +37,9 @@ export default ({ setIsAuthenticated, accountData }: PropsShape) => {
             <Originals 
               accountData={accountData}
             />
+          </Route>
+          <Route path='/rules'>
+            <RepeatRules />
           </Route>
         </Switch>
       </main>

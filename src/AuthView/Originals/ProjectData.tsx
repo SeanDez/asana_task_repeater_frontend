@@ -1,4 +1,4 @@
-import IAccountData from '../IAccountData';
+import IAccountData from '../interfaces/IAccountData';
 import { IProjectWithSortedTasks } from './IProjectWithSortedTasks';
 export class ProjectData {
   constructor (private accountData: IAccountData) {}

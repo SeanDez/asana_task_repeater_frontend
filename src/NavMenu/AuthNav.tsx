@@ -37,8 +37,11 @@ export default ({ setIsAuthenticated }: PropsShape) => (
           <MenuIcon />
         </IconButton>
 
+        <Link to="/originals">Originals</Link>
+        <Link to="/rules">Rules</Link>
+
         <RightItems>
-          <h6>Hello, nameHere</h6>
+          <h6>Hello, name</h6>
           <Button 
             color='inherit'
             onClick={() => logOut(setIsAuthenticated)}

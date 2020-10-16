@@ -10,7 +10,7 @@ import AuthView from '../AuthView/AuthView';
 import Loader from '../Loader';
 import requestAllAccountData from './helpers/requestAllAccountData';
 import VisitorView from '../VisitorView/VisitorView';
-import IAccountData from '../AuthView/IAccountData';
+import IAccountData from '../AuthView/interfaces/IAccountData';
 
 enum cookieNames {
   email = 'asana_email_encrypted',

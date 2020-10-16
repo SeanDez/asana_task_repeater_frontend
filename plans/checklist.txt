@@ -12,11 +12,19 @@ give an option to set up a repeater
 
 
 // new repeater
-new rule modal on click
-rule options are offered (number, unit, start)
-fetch request is written
+X new rule box on click
+X rule options are offered (number, unit, start)
+X fetch request is written
 rule added (and error) snackbar
 
+// repeaters view
+displaying all in a table
+  include all db columns. localId is assigned as a value onto local state
+update any value
+delete any row
+
+// auth view
+add a nav menu
 
 setup 50 task per page limit
 

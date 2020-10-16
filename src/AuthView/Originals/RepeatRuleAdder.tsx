@@ -14,14 +14,14 @@ interface SnackbarData {
 /*
   sends a fetch request to backend API to create a new repeater rule in the database
 */
-async function createNewRepeatRule(projectGid: string, taskGid: string, timeInterval: number, timeUnit: string, startDate: string): Promise<SnackbarData> {
+async function createNewRepeatRule(projectGid: string, taskGid: string, timeInterval: number, timeUnit: string, startDateTime: string): Promise<SnackbarData> {
   const ruleEndpoint = buildUrl(REACT_APP_HTTPS_BACKEND_DOMAIN!, {
     path: '/repeat-rules/add',
   });
 
   const asana_email_encrypted = Cookies.get('asana_email_encrypted')!;
 
-  const body = JSON.stringify({ projectGid, taskGid, timeInterval, timeUnit, startDate })
+  const body = JSON.stringify({ projectGid, taskGid, timeInterval, timeUnit, startDateTime })
 
   try {
     const response = await fetch(ruleEndpoint, {
@@ -52,7 +52,7 @@ export function RepeatRuleAdder({ projectGid, taskGid }: any) {
   enum TimeUnits { days = 'days', weeks = 'weeks', months = 'months' };
   const [timeUnit, setTimeUnit] = React.useState<string>(TimeUnits.weeks);
 
-  const today: string = moment().format('YYYY-MM-DD');
+  const today: string = moment().format('YYYY-MM-DD HH:MM A');
   const [startDateTime, setStartDateTime] = React.useState<string>(today);
   const [snackbar, setSnackbar] = React.useState({});
 
