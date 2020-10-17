@@ -14,8 +14,9 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import Cookies from 'js-cookie';
+import { DeleteForeverOutlined } from '@material-ui/icons';
 
-const { REACT_APP_HTTPS_BACKEND_DOMAIN } = process.env;
+const { REACT_APP_HTTPS_BACKEND_DOMAIN } = process.env as { [key: string]: string };
 const asana_email_encrypted = Cookies.get('asana_email_encrypted')!;
 
 interface IRuleData {
@@ -31,7 +32,7 @@ interface IRuleData {
  }
 
 async function loadRepeatRulesToState(emailIdEncrypted: string, setRuleData: Function) {
-  const getRuleDataEndpoint = buildUrl(REACT_APP_HTTPS_BACKEND_DOMAIN!, {
+  const getRuleDataEndpoint = buildUrl(REACT_APP_HTTPS_BACKEND_DOMAIN, {
     path: '/repeat-rules/all'
   });
   console.log('getRuleDataEndpoint', getRuleDataEndpoint);
@@ -49,6 +50,33 @@ async function loadRepeatRulesToState(emailIdEncrypted: string, setRuleData: Fun
     if (response.ok) {
       const ruleData = await response.json();
       setRuleData(ruleData);
+    }
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+async function deleteRule(localId: number, emailEncrypted: string) {
+  const deleteEndpoint = buildUrl(REACT_APP_HTTPS_BACKEND_DOMAIN, {
+    path: '/repeat-rules/'
+  });
+
+  const body = JSON.stringify({ localId });
+
+  try {
+    const response = await fetch(deleteEndpoint, {
+      method: 'delete',
+      mode: 'cors',
+      headers: new Headers({
+        'content-type': 'application/json',
+        asana_email_encrypted: emailEncrypted,
+      }),
+      body,
+    })
+  
+    if (response.ok) {
+      // todo set state on a snackbar message
+      console.log('delete request probably worked');
     }
   } catch (error) {
     throw new Error(error);
@@ -80,33 +108,41 @@ export default () => {
   }
 
   return (
-    <TableContainer component={Paper}>
-      { console.log('repeat rules inside render') }
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Rule</TableCell>
-            <TableCell align="right">Start Date & Time</TableCell>
-            <TableCell align="right">Repeat Frequency</TableCell>
-            <TableCell align="right">Delete</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          { (ruleData as IRuleData[]).map(({ start_timestamp, local_id, repeat_interval, repeat_unit, task_gid, task_name, project_gid, project_name }: IRuleData) => (
-            <TableRow key={local_id}>
-              <TableCell>{task_name} ({project_name})</TableCell>
-              <ClickableCell align="right">{moment(start_timestamp).format('MMM D[,] YYYY [at] H:MM A [(]Z z[)]')}</ClickableCell>
-              <ClickableCell align="right">{`every ${repeat_interval} ${repeat_unit}`}</ClickableCell>
-              <ClickableCell 
-                align="right"
-              >
-                <DeleteForeverIcon fontSize="small" />
-              </ClickableCell>
+    <div>
+      <div>
+        <h3>Repeat Rules</h3>
+        <p>Each task with a repeat rule is listed below. Jobs are checked for a duplication event every 30 minutes, which means it may take up to 30 minutes for a task to be duplicated as expected.</p>
+      </div>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Task Name (Project Name)</TableCell>
+              <TableCell align="right">Start Date & Time</TableCell>
+              <TableCell align="right">Repeat Frequency</TableCell>
+              <TableCell align="right">Delete</TableCell>
             </TableRow>
-          )) }
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            { (ruleData as IRuleData[]).map(({ start_timestamp, local_id, repeat_interval, repeat_unit, task_gid, task_name, project_gid, project_name }: IRuleData) => (
+              <TableRow key={local_id}>
+                <TableCell>{task_name} ({project_name})</TableCell>
+                <ClickableCell align="right">{moment(start_timestamp).format('MMM D[,] YYYY [at] H:MM A [(]Z z[)]')}</ClickableCell>
+                <ClickableCell align="right">{`every ${repeat_interval} ${repeat_unit}`}</ClickableCell>
+                <ClickableCell 
+                  align="right"
+                >
+                  <DeleteForeverIcon fontSize="small" onClick={async () => {
+                    await deleteRule(local_id, asana_email_encrypted);
+                    await loadRepeatRulesToState(asana_email_encrypted, setRuleData);
+                  }} />
+                </ClickableCell>
+              </TableRow>
+            )) }
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
   )
 }
 

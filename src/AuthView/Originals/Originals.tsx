@@ -31,28 +31,32 @@ export default ({ accountData }: PropsShape) => {
   */
   return (
     <OuterContainer>
-       { projectTaskData.map(((projectAndTasks: IProjectWithSortedTasks) => (
-         <div key={projectAndTasks.gid}>
-           <h4>{projectAndTasks.name}</h4>
-           <hr />
-           <ul>
-           { projectAndTasks.tasks.map((task: ITask) => (
-             <li key={task.gid}>
-               <p>{task.name}</p>
-               <p>{task.due_on}</p>
-               {/* <p>{task.notes}</p> */}
-               <p>{task.tags}</p>
-               <RepeatRuleAdder
-                projectGid={projectAndTasks.gid}
-                projectName={projectAndTasks.name}
-                taskGid={task.gid}
-                taskName={task.name}
-               />
-             </li>
-           )) }
-           </ul>
-         </div>
-       ))) }
+      <div>
+        <h3>Original Tasks</h3>
+        <p>Your Asana tasks that aren't copies are shown below. To set up a repeat rule on any task, click the "add" button. Then set a start date and repeat frequency.</p>
+      </div>
+      { projectTaskData.map(((projectAndTasks: IProjectWithSortedTasks) => (
+        <div key={projectAndTasks.gid}>
+          <h4>{projectAndTasks.name}</h4>
+          <hr />
+          <ul>
+          { projectAndTasks.tasks.map((task: ITask) => (
+            <li key={task.gid}>
+              <p>{task.name}</p>
+              <p>{task.due_on}</p>
+              {/* <p>{task.notes}</p> */}
+              <p>{task.tags}</p>
+              <RepeatRuleAdder
+              projectGid={projectAndTasks.gid}
+              projectName={projectAndTasks.name}
+              taskGid={task.gid}
+              taskName={task.name}
+              />
+            </li>
+          )) }
+          </ul>
+        </div>
+      ))) }
     </OuterContainer>
   )
 }

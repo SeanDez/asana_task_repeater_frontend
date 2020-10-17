@@ -16,7 +16,7 @@ interface SnackbarData {
 */
 async function createNewRepeatRule(projectGid: string, projectName: string, taskGid: string, taskName: string, timeInterval: number, timeUnit: string, startDateTime: string): Promise<SnackbarData> {
   const ruleEndpoint = buildUrl(REACT_APP_HTTPS_BACKEND_DOMAIN!, {
-    path: '/repeat-rules/add',
+    path: '/repeat-rules/',
   });
 
   const asana_email_encrypted = Cookies.get('asana_email_encrypted')!;
