@@ -44,7 +44,9 @@ export default ({ accountData }: PropsShape) => {
                <p>{task.tags}</p>
                <RepeatRuleAdder
                 projectGid={projectAndTasks.gid}
+                projectName={projectAndTasks.name}
                 taskGid={task.gid}
+                taskName={task.name}
                />
              </li>
            )) }

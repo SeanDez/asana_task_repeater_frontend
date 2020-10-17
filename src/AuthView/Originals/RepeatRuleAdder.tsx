@@ -14,14 +14,14 @@ interface SnackbarData {
 /*
   sends a fetch request to backend API to create a new repeater rule in the database
 */
-async function createNewRepeatRule(projectGid: string, taskGid: string, timeInterval: number, timeUnit: string, startDateTime: string): Promise<SnackbarData> {
+async function createNewRepeatRule(projectGid: string, projectName: string, taskGid: string, taskName: string, timeInterval: number, timeUnit: string, startDateTime: string): Promise<SnackbarData> {
   const ruleEndpoint = buildUrl(REACT_APP_HTTPS_BACKEND_DOMAIN!, {
     path: '/repeat-rules/add',
   });
 
   const asana_email_encrypted = Cookies.get('asana_email_encrypted')!;
 
-  const body = JSON.stringify({ projectGid, taskGid, timeInterval, timeUnit, startDateTime })
+  const body = JSON.stringify({ projectGid, projectName, taskGid, taskName, timeInterval, timeUnit, startDateTime })
 
   try {
     const response = await fetch(ruleEndpoint, {
@@ -46,7 +46,7 @@ async function createNewRepeatRule(projectGid: string, taskGid: string, timeInte
 }
 
 
-export function RepeatRuleAdder({ projectGid, taskGid }: any) {
+export function RepeatRuleAdder({ projectGid, projectName, taskGid, taskName }: any) {
   const [addRuleView, setAddRuleView] = React.useState(false);
   const [timeInterval, setTimeInterval] = React.useState<number>(2)
   enum TimeUnits { days = 'days', weeks = 'weeks', months = 'months' };
@@ -100,11 +100,6 @@ export function RepeatRuleAdder({ projectGid, taskGid }: any) {
             value={startDateTime}
             onChange={(e: any) => setStartDateTime(e)}
           />
-          {/* <input 
-            type="date" 
-            onBlur={e => setStartDateTime(e.target.value)} 
-            defaultValue={today}
-          /> */}
         </div>
 
         <button onClick={e => { 
@@ -113,7 +108,7 @@ export function RepeatRuleAdder({ projectGid, taskGid }: any) {
         }}>X Close</button>
         <button onClick={async e => { 
           e.preventDefault();
-          const snackbarData: SnackbarData = await createNewRepeatRule(projectGid, taskGid, timeInterval, timeUnit, startDateTime);
+          const snackbarData: SnackbarData = await createNewRepeatRule(projectGid, projectName, taskGid, taskName, timeInterval, timeUnit, startDateTime);
           setSnackbar(snackbarData);
           console.log(snackbar);
         }}>Create</button>
