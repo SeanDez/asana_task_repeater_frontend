@@ -75,10 +75,12 @@ function App() {
   })
   
   // set isAuthenticated to true if email cookie is present (means user has active session)
-  useEffect(() => {
-    const emailCookieFound = cookieIsPresent(cookieNames.email);
-    if (emailCookieFound) { setIsAuthenticated(true); }
-  }, []);
+  // todo reenable this block
+  // it was switched off to work on the visitor view
+  // useEffect(() => {
+  //   const emailCookieFound = cookieIsPresent(cookieNames.email);
+  //   if (emailCookieFound) { setIsAuthenticated(true); }
+  // }, []);
   
   // under loading conditions only, request the account's full dataset
   useEffect(() => {

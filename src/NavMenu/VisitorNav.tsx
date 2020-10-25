@@ -38,7 +38,6 @@ const OuterContainer = styled.div`
 const StyledToolbar = styled(Toolbar)`
   display: flex;
   width: 90vw;
-  max-width: 1000px;
   margin: 0 auto;
   flex-flow: row wrap;
   justify-content: space-between;

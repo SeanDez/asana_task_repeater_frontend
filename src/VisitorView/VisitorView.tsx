@@ -1,8 +1,9 @@
 import React from 'react';
+import VisitorNav from '../NavMenu/VisitorNav';
+import DeveloperNote from '../SalesView/DeveloperNote';
 import SalesDeck from '../SalesView/SalesDeck';
 import FeatureSection from '../SalesView/FeatureSection';
-import VisitorNav from '../NavMenu/VisitorNav';
-
+import styled from 'styled-components';
 
 const { REACT_APP_ASANA_REDIRECT_URL_MINUS_STATE } = process.env as { [key: string]: string };
 
@@ -17,7 +18,7 @@ export default ({ newStateValue, allCookiesOnThisDomain }: PropsShape) => {
   console.log('OAuthURL',OAuthURL);
 
   return (
-    <div>
+    <OuterContainer>
       <header className="App-header">
         <VisitorNav 
           OAuthURL={OAuthURL} 
@@ -29,7 +30,12 @@ export default ({ newStateValue, allCookiesOnThisDomain }: PropsShape) => {
           allCookiesOnThisDomain={allCookiesOnThisDomain}
         />
         <FeatureSection />
+        <DeveloperNote />
       </main>
-    </div>
+    </OuterContainer>
   )
 }
+
+const OuterContainer = styled.div`
+  max-width: 900px;
+`;

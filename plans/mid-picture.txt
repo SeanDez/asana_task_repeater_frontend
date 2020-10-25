@@ -1,6 +1,6 @@
-setup a handler to send a fetch request to the back end
+x setup a handler to send a fetch request to the back end
 	/repeatRules/add
 		gid, frequency, start date
 
 
-later on, add a page to display all repeat rules
+x add a page to display all repeat rules
