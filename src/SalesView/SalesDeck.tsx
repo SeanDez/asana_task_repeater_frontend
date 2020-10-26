@@ -27,15 +27,16 @@ const OuterContainer = styled.section<ExtendedProps>`
   background-size: cover;
   background-position: center center;
   box-shadow: inset 2000px 2000px 0 0 rgba(39, 1, 14, 0.8);
-  margin-top: 70px;
   width: 100vw;
+  margin: 0 auto;
+  margin-top: 70px;
   height: 400px;
 `;
 
 const InnerContainer = styled.div`
   border: 2px dashed pink;
-  max-width: 500px;
   width: 93vw;
+  max-width: 500px;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;

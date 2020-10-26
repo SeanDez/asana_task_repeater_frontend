@@ -3,6 +3,8 @@ import VisitorNav from '../NavMenu/VisitorNav';
 import DeveloperNote from '../SalesView/DeveloperNote';
 import SalesDeck from '../SalesView/SalesDeck';
 import FeatureSection from '../SalesView/FeatureSection';
+import FAQ from '../SalesView/FAQ';
+import ProblemSolution from '../SalesView/ProblemSolution';
 import styled from 'styled-components';
 
 const { REACT_APP_ASANA_REDIRECT_URL_MINUS_STATE } = process.env as { [key: string]: string };
@@ -29,8 +31,10 @@ export default ({ newStateValue, allCookiesOnThisDomain }: PropsShape) => {
         <SalesDeck
           allCookiesOnThisDomain={allCookiesOnThisDomain}
         />
+        <ProblemSolution />
         <FeatureSection />
         <DeveloperNote />
+        <FAQ />
       </main>
     </OuterContainer>
   )

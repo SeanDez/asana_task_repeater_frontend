@@ -31,12 +31,12 @@ export default (props: any) => (
 interface styledProps { importedImage: string }
 
 const OuterContainer = styled.div<styledProps>`
+  margin: 0 auto;
   background-image: url(${({ importedImage }) => importedImage});
   background-size: cover;
   background-position: center center;
   box-shadow: inset 2000px 2000px 0 0 rgba(5, 2, 31, 0.93);
   width: 100vw;
-  /* height: 800px; */
 `;
 
 const InnerContainer = styled.div`
