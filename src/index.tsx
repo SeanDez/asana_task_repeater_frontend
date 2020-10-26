@@ -3,12 +3,16 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './ApplicationBase/App';
+import { ThemeProvider } from 'styled-components';
+import { theme } from './theme';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')

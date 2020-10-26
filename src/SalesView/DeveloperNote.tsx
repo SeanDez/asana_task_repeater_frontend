@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import { BodyInnerContainer, BodyOuterContainer } from '../theme';
 
 export default () => (
-  <OuterContainer>
+  <BodyOuterContainer r={20} g={0} b={0} a={0.9}>
     <InnerContainer>
       <h2>A Note From the Developer</h2>
 
@@ -30,19 +31,12 @@ export default () => (
         I don't expect to turn the service into a paid application, so please continue to enjoy it free of charge when those changes are added. 
       </p>
     </InnerContainer>
-  </OuterContainer>
+  </BodyOuterContainer>
 );
 
-const OuterContainer = styled.section`
-  width: 100vw;
-`;
 
-const InnerContainer = styled.div`
-  display: flex;
-  flex-flow: column nowrap;
-  margin: 0 auto;
-  width: 90vw;
-  max-width: 900px;
+
+const InnerContainer = styled(BodyInnerContainer)`
   text-align: center;
 `;
 

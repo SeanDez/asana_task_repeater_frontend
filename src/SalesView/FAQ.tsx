@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import { BodyInnerContainer, BodyOuterContainer } from '../theme';
 
 export default () => (
-  <OuterContainer>
-    <InnerContainer>
+  <BodyOuterContainer r={0} g={0} b={20} a={0.94}>
+    <BodyInnerContainer>
     <h2>Frequently Asked Questions</h2>
 
     <FaqBlock>
@@ -46,22 +47,13 @@ export default () => (
       <p>Determine the amount of time you spend scheduling tasks for team members. Narrow down to the tasks that are repetitive. Asana Task Repeater may save time and mental load by automating those specific tasks.</p> 
       <p>In raw time savings I personally may save 45 minutes per week. The mental benefit, of not having to fulfill another checklist item each Friday, may be an even bigger benefit than that 45 minutes per week.</p>
     </FaqBlock>
-    </InnerContainer>
-  </OuterContainer>
+    </BodyInnerContainer>
+  </BodyOuterContainer>
 )
 
 const OuterContainer = styled.section`
   width: 100vw;
   border: 2px dashed green;
-`;
-
-
-const InnerContainer = styled.div`
-  display: flex;
-  flex-flow: column nowrap;
-  margin: 0 auto;
-  width: 90vw;
-  max-width: 900px;
 `;
 
 const FaqBlock = styled.div`
