@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import lodash from 'lodash';
 import IAccountData from '../interfaces/IAccountData';
 import { IProjectWithSortedTasks } from './IProjectWithSortedTasks';
 import { ProjectData } from './ProjectData';
 import { ITask } from './ITask';
 import { RepeatRuleAdder } from './RepeatRuleAdder';
 import "react-datetime/css/react-datetime.css";
+
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 
 interface PropsShape {
   accountData: IAccountData;
@@ -38,29 +45,41 @@ export default ({ accountData }: PropsShape) => {
       { projectTaskData.map(((projectAndTasks: IProjectWithSortedTasks) => (
         <div key={projectAndTasks.gid}>
           <h4>{projectAndTasks.name}</h4>
-          <hr />
-          <ul>
-          { projectAndTasks.tasks.map((task: ITask) => (
-            <li key={task.gid}>
-              <p>{task.name}</p>
-              <p>{task.due_on}</p>
-              {/* <p>{task.notes}</p> */}
-              <p>{task.tags}</p>
-              <RepeatRuleAdder
-              projectGid={projectAndTasks.gid}
-              projectName={projectAndTasks.name}
-              taskGid={task.gid}
-              taskName={task.name}
-              />
-            </li>
-          )) }
-          </ul>
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Task Name</TableCell>
+                  <TableCell align="right">Due Date</TableCell>
+                  <TableCell align="right">Tags</TableCell>
+                  <TableCell align="right"></TableCell> {/* Empty cell for alignment */}
+                </TableRow>
+              </TableHead>
+            <TableBody>
+            { projectAndTasks.tasks.map((task: ITask) => (
+              <TableRow key={task.gid}>
+                    <TableCell>{task.name} ({task.gid})</TableCell>
+                    <TableCell align="right">{task.due_on}</TableCell>
+                    <TableCell align="right">{task.tags}</TableCell>
+                    <TableCell align="right">
+                      <RepeatRuleAdder
+                        projectGid={projectAndTasks.gid}
+                        projectName={projectAndTasks.name}
+                        taskGid={task.gid}
+                        taskName={task.name}
+                        />
+                    </TableCell>
+                </TableRow>
+            )) }
+            </TableBody>
+          </Table>
+          </TableContainer>
         </div>
       ))) }
     </OuterContainer>
   )
 }
 
-const OuterContainer = styled.section`
-  border: 2px dashed yellow;
+const OuterContainer = styled.div`
+  padding: 2vh 2vw;
 `;

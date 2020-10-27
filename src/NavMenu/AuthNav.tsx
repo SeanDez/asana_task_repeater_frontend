@@ -53,7 +53,8 @@ export default ({ setIsAuthenticated }: PropsShape) => (
 );
 
 const OuterContainer = styled.div`
-  margin-bottom: 60px;
+  margin-bottom: 170px;
+  border: 2px dashed yellow;
 `;
 
 const StyledToolbar = styled(Toolbar)`
