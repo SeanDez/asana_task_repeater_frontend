@@ -52,7 +52,7 @@ export default ({ accountData }: PropsShape) => {
                   <TableCell>Task Name</TableCell>
                   <TableCell align="right">Due Date</TableCell>
                   <TableCell align="right">Tags</TableCell>
-                  <TableCell align="right"></TableCell> {/* Empty cell for alignment */}
+                  <TableCell></TableCell> {/* Empty cell for alignment */}
                 </TableRow>
               </TableHead>
             <TableBody>
@@ -61,7 +61,7 @@ export default ({ accountData }: PropsShape) => {
                     <TableCell>{task.name} ({task.gid})</TableCell>
                     <TableCell align="right">{task.due_on}</TableCell>
                     <TableCell align="right">{task.tags}</TableCell>
-                    <TableCell align="right">
+                    <TableCell align="center">
                       <RepeatRuleAdder
                         projectGid={projectAndTasks.gid}
                         projectName={projectAndTasks.name}

@@ -1,8 +1,12 @@
 import buildUrl from 'build-url';
 import moment from 'moment';
 import React from 'react';
+import styled from 'styled-components';
+
 import DateTime from 'react-datetime';
 import Cookies from 'js-cookie';
+import Button from '@material-ui/core/Button';
+import Input from '@material-ui/core/Input';
 
 const { REACT_APP_HTTPS_BACKEND_DOMAIN } = process.env;
 
@@ -59,10 +63,14 @@ export function RepeatRuleAdder({ projectGid, projectName, taskGid, taskName }: 
   if (addRuleView === false) {
     return (
       <div>
-        <button
+        <Button
+          variant='outlined'
+          color='primary'
           value={taskGid}
           onClick={() => setAddRuleView(true)}
-        >Add repeater</button>
+        >
+          Add repeater
+        </Button>
       </div>
     );
   }
@@ -71,29 +79,35 @@ export function RepeatRuleAdder({ projectGid, projectName, taskGid, taskName }: 
     <div>
       <form>
         <div>
-          <span>Every </span>
-          <span>
-            <input 
-              type='number' 
-              onBlur={e => setTimeInterval(Number(e.target.value))} 
-              defaultValue="2"
-            />
-          </span>
-          <span>
-            <input type='radio' 
-              value={TimeUnits.days} 
-              onChange={(e: any) => setTimeUnit(TimeUnits.days)} 
-            />
-            <label>{ TimeUnits.days }</label>
-          </span>
-          <span>
-            <input type='radio' value={ TimeUnits.weeks } onChange={(e: any) => setTimeUnit(TimeUnits.weeks)} checked />
-            <label>{ TimeUnits.weeks }</label>
-          </span>
-          <span>
-            <input type='radio' value={TimeUnits.months} onChange={(e: any) => setTimeUnit(TimeUnits.months)} />
-            <label>{ TimeUnits.months }</label>
-          </span>
+          <SlightlyPaddedDiv>
+              <span>Every </span>
+              <span>
+                <Input 
+                  type='number' 
+                  onBlur={e => setTimeInterval(Number(e.target.value))} 
+                  defaultValue="2"
+                  style={{ width: 100, textAlign: 'center' }}
+                />
+              </span>
+            <WrappingContainer>
+              <RowLockedOption>
+                <input type='radio' 
+                  value={TimeUnits.days} 
+                  onChange={(e: any) => setTimeUnit(TimeUnits.days)} 
+                />
+                <label> { TimeUnits.days }</label>
+              </RowLockedOption>
+              <RowLockedOption>
+                <input type='radio' value={ TimeUnits.weeks } onChange={(e: any) => setTimeUnit(TimeUnits.weeks)} checked />
+                <label> { TimeUnits.weeks }</label>
+              </RowLockedOption>
+              <RowLockedOption>
+                <input type='radio' value={TimeUnits.months} onChange={(e: any) => setTimeUnit(TimeUnits.months)} />
+                <label> { TimeUnits.months }</label>
+              </RowLockedOption>
+            </WrappingContainer>
+          </SlightlyPaddedDiv>
+
 
           <span>Start Date: </span>
           <DateTime
@@ -102,17 +116,54 @@ export function RepeatRuleAdder({ projectGid, projectName, taskGid, taskName }: 
           />
         </div>
 
-        <button onClick={e => { 
-          e.preventDefault();
-          setAddRuleView(false)        
-        }}>X Close</button>
-        <button onClick={async e => { 
-          e.preventDefault();
-          const snackbarData: SnackbarData = await createNewRepeatRule(projectGid, projectName, taskGid, taskName, timeInterval, timeUnit, startDateTime);
-          setSnackbar(snackbarData);
-          console.log(snackbar);
-        }}>Create</button>
+        <SlightlyPaddedDiv>
+          <RowLockedOption>
+            <Button 
+              variant='outlined'
+              color='primary'
+              onClick={async e => { 
+                e.preventDefault();
+                const snackbarData: SnackbarData = await createNewRepeatRule(projectGid, projectName, taskGid, taskName, timeInterval, timeUnit, startDateTime);
+                setSnackbar(snackbarData);
+                console.log(snackbar);
+              }}
+            >
+              Create
+            </Button>
+            <Button
+              variant='outlined'
+              color='secondary'
+              onClick={e => { 
+                e.preventDefault();
+                setAddRuleView(false)        
+              }}
+            >
+              X Close
+            </Button>
+          </RowLockedOption>
+        </SlightlyPaddedDiv>
       </form>
     </div>
   )
 }
+
+const SlightlyPaddedDiv = styled.div`
+  padding: 1vh 1vw;
+`;
+
+const RowLockedOption = styled.span`
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  margin-left: 1vw;
+
+  & :nth-child(2) {
+    margin-left: 1vw;
+  }
+`;
+
+const WrappingContainer = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  margin-left: 1.5vw;
+`;
