@@ -1,4 +1,7 @@
+import React from 'react';
 import styled from 'styled-components';
+import { withStyles } from '@material-ui/core';
+import AppBar from '@material-ui/core/AppBar';
 
 import patternedBg from './SalesView/images/abstractColorBg.jpg';
 import swesinSwankOffice from './SalesView/images/swesinSwankOffice.jpg';
@@ -39,4 +42,35 @@ export const BodyOuterContainer = styled(OuterContainerBase)<rgba>`
   box-shadow: inset 2000px 2000px 0 0 rgba(
     ${({ r, g, b, a }) => `${r}, ${g}, ${b}, ${a}`}
   );
+`;
+
+export const StyledAppBar = withStyles({
+  root: { backgroundColor: '#111' }
+})(AppBar);
+
+export const FlexRow = styled.div`
+display: flex;
+flex-flow: row wrap;
+justify-content: center;
+
+& > * {
+  margin: 2vh 2vw;
+}
+`;
+
+export const FilledImage = styled.img`
+  height: 100%;
+  width: 100%;
+`;
+
+export const ImageContainer = styled.div<MinSize>`
+  width: max(${({ minSize }: any) => minSize}px, 35vw); 
+  height: auto; 
+`;
+
+interface MinSize { minSize: number }
+
+export const SmallTextArea = styled.div<MinSize>`
+  width: min(${({ minSize }: any) => minSize}px, 100%);
+  flex-grow: 10;
 `;

@@ -1,22 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
+
+import Button from '@material-ui/core/Button';
 import swesinSwankOffice from './images/swesinSwankOffice.jpg';
-import { InnerContainerBase, OuterContainerBase } from '../theme';
+import { InnerContainerBase, OuterContainerBase, FilledImage, ImageContainer, SmallTextArea, FlexRow } from '../theme';
+import tabletScreen from './images/tablet screen.jpg';
 
 export default (props: any) => (
   <OuterContainer imageProp={swesinSwankOffice}>
-    <InnerContainerExtended>
-      <h1>Automate Repetitive Task Posting</h1>
-      <p>Setup repeat rules and watch your tasks auto-assign to team members every two weeks | day | third month | {'{ any other interval }'}</p>
-      
-      <p>  
-        <button
-          onClick={() => console.log('allCookiesOnThisDomain :>> ', props.allCookiesOnThisDomain)}
-        >
-          check cookies
-        </button>
-      </p>
-    </InnerContainerExtended>
+    <FlexRow>
+      <InnerContainerExtended>
+        <h1>Automate Repetitive Task Posting</h1>
+        <h4>Setup repeat rules and watch your tasks auto-assign to team members </h4>
+        <Button color='primary' variant='contained'>Try Now - Login with Asana Account</Button>
+      </InnerContainerExtended>
+      <ImageContainer minSize={300}>
+        <FilledImage src={tabletScreen} />
+      </ImageContainer>
+    </FlexRow>
   </OuterContainer>
 )
 
@@ -28,16 +29,13 @@ const OuterContainer = styled(OuterContainerBase)<ExtendedProps>`
   background-position: center center;
   box-shadow: inset 2000px 2000px 0 0 rgba(39, 1, 14, 0.8);
   margin-top: 70px;
+
+  & * { color: white; }
 `;
 
 const InnerContainerExtended = styled(InnerContainerBase)`
   text-align: center;
-  border: 2px dashed pink;
   width: 93vw;
   max-width: 500px;
   align-items: center;
-
-  @media (min-width: 600px) {
-    padding-left: 13vw;
-  }
 `;

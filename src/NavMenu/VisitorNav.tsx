@@ -2,10 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
+import { StyledAppBar } from '../theme';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import Button from '@material-ui/core/Button';
 
 interface PropsShape {
@@ -14,20 +13,16 @@ interface PropsShape {
 
 export default (props: PropsShape) => (
   <OuterContainer>
-    <AppBar>
+    <StyledAppBar>
       <StyledToolbar>
-        <IconButton color="inherit">
-          <MenuIcon />
-        </IconButton>
 
-        {  }
         <RightItems>
           <StyledAnchorTag href={props.OAuthURL}>
             <Button color='inherit'>Sign Up or Log In via Asana</Button>
           </StyledAnchorTag>
         </RightItems>
       </StyledToolbar>
-    </AppBar>
+    </StyledAppBar>
   </OuterContainer>
 );
 
@@ -41,7 +36,6 @@ const StyledToolbar = styled(Toolbar)`
   margin: 0 auto;
   flex-flow: row wrap;
   justify-content: space-between;
-  border: 2px dashed yellow;
 `;
 
 const RightItems = styled.div`

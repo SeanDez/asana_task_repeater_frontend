@@ -3,7 +3,10 @@ import styled from 'styled-components';
 import { BodyInnerContainer, BodyOuterContainer } from '../theme';
 
 export default () => (
-  <BodyOuterContainer r={0} g={0} b={20} a={0.94}>
+  <BodyOuterContainer 
+    r={255} g={255} b={255} a={1}
+    style={{ color: '#EB8A90' }}
+  >
     <BodyInnerContainer>
     <h2>Frequently Asked Questions</h2>
 
@@ -54,6 +57,7 @@ export default () => (
 const OuterContainer = styled.section`
   width: 100vw;
   border: 2px dashed green;
+
 `;
 
 const FaqBlock = styled.div`

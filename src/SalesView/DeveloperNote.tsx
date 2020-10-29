@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { BodyInnerContainer, BodyOuterContainer } from '../theme';
 
 export default () => (
-  <BodyOuterContainer r={20} g={0} b={0} a={0.9}>
+  <BodyOuterContainer r={243} g={223} b={191} a={0.9}>
     <InnerContainer>
       <h2>A Note From the Developer</h2>
 

@@ -5,11 +5,8 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import buildUrl from 'build-url';
 
-import AppBar from '@material-ui/core/AppBar';
+import { StyledAppBar } from '../theme';
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import Button from '@material-ui/core/Button';
 
 /*
   Calls the back end to delete the auth related cookies
@@ -31,30 +28,28 @@ interface PropsShape {
 
 export default ({ setIsAuthenticated }: PropsShape) => (
   <OuterContainer>
-    <AppBar>
+    <StyledAppBar>
       <StyledToolbar>
-        <IconButton color="inherit">
-          <MenuIcon />
-        </IconButton>
-
-        <Link to="/originals">Originals</Link>
-        <Link to="/rules">Rules</Link>
+        <StyledLink to="/originals">Originals</StyledLink>
+        <StyledLink to="/rules">Rules</StyledLink>
 
         <RightItems>
-          <h6>Hello, name</h6>
-          <Button 
-            color='inherit'
+          <StyledAnchorTag 
             onClick={() => logOut(setIsAuthenticated)}
-          >Log Out</Button>
+          >Log Out</StyledAnchorTag>
         </RightItems>
       </StyledToolbar>
-    </AppBar>
+    </StyledAppBar>
   </OuterContainer>
 );
 
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+`;
+
 const OuterContainer = styled.div`
-  margin-bottom: 170px;
-  border: 2px dashed yellow;
+  margin-bottom: 80px;
 `;
 
 const StyledToolbar = styled(Toolbar)`
@@ -64,7 +59,6 @@ const StyledToolbar = styled(Toolbar)`
   margin: 0 auto;
   flex-flow: row wrap;
   justify-content: space-between;
-  border: 2px dashed yellow;
 `;
 
 const RightItems = styled.div`
@@ -75,4 +69,5 @@ const RightItems = styled.div`
 const StyledAnchorTag = styled.a`
   color: inherit;
   text-decoration: none;
+  cursor: pointer;
 `;

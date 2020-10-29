@@ -39,12 +39,12 @@ export default ({ accountData }: PropsShape) => {
   return (
     <OuterContainer>
       <div>
-        <h3>Original Tasks</h3>
+        <h2>Original Tasks</h2>
         <p>Your Asana tasks that aren't copies are shown below. To set up a repeat rule on any task, click the "add" button. Then set a start date and repeat frequency.</p>
       </div>
       { projectTaskData.map(((projectAndTasks: IProjectWithSortedTasks) => (
         <div key={projectAndTasks.gid}>
-          <h4>{projectAndTasks.name}</h4>
+          <h4 style={{ paddingTop: 30 }}>{projectAndTasks.name}</h4>
           <TableContainer>
             <Table>
               <TableHead>

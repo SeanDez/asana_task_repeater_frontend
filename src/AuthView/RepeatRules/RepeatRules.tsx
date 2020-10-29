@@ -101,16 +101,16 @@ export default () => {
 
   if (ruleDataIsPopulated === false) {
     return (
-      <div>
+      <OuterContainer>
         <h3>No repeat rules are available to be displayed. Create a new repeater from the "originals" view.</h3>
-      </div>
+      </OuterContainer>
     )
   }
 
   return (
-    <div>
+    <OuterContainer>
       <div>
-        <h3>Repeat Rules</h3>
+        <h2>Repeat Rules</h2>
         <p>Each task with a repeat rule is listed below. Jobs are checked for a duplication event every 30 minutes, which means it may take up to 30 minutes for a task to be duplicated as expected.</p>
       </div>
       <TableContainer component={Paper}>
@@ -127,7 +127,7 @@ export default () => {
             { (ruleData as IRuleData[]).map(({ start_timestamp, local_id, repeat_interval, repeat_unit, task_gid, task_name, project_gid, project_name }: IRuleData) => (
               <TableRow key={local_id}>
                 <TableCell>{task_name} ({project_name})</TableCell>
-                <ClickableCell align="right">{moment(start_timestamp).format('MMM D[,] YYYY [at] H:MM A [(]Z z[)]')}</ClickableCell>
+                <ClickableCell align="right">{moment(start_timestamp).format('MMM D[,] YYYY [at] H:MM A [(]Z[)]')}</ClickableCell>
                 <ClickableCell align="right">{`every ${repeat_interval} ${repeat_unit}`}</ClickableCell>
                 <ClickableCell 
                   align="right"
@@ -142,9 +142,13 @@ export default () => {
           </TableBody>
         </Table>
       </TableContainer>
-    </div>
+    </OuterContainer>
   )
 }
+
+const OuterContainer = styled.div`
+  padding: 2vh 2vw;
+`;
 
 const ClickableCell = styled(TableCell)`
   & :hover {
