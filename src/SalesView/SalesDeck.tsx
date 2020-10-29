@@ -1,9 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Button from '@material-ui/core/Button';
 import swesinSwankOffice from './images/swesinSwankOffice.jpg';
-import { InnerContainerBase, OuterContainerBase, FilledImage, ImageContainer, SmallTextArea, FlexRow } from '../theme';
+import { InnerContainerBase, OuterContainerBase, FilledImage, ImageContainer, FlexRow, StyledButton } from '../theme';
 import tabletScreen from './images/tablet screen.jpg';
 
 export default (props: any) => (
@@ -12,7 +11,7 @@ export default (props: any) => (
       <InnerContainerExtended>
         <h1>Automate Repetitive Task Posting</h1>
         <h4>Setup repeat rules and watch your tasks auto-assign to team members </h4>
-        <Button color='primary' variant='contained'>Try Now - Login with Asana Account</Button>
+        <StyledButton color='primary' variant='contained'>Try Now - Log In with Asana Account</StyledButton>
       </InnerContainerExtended>
       <ImageContainer minSize={300}>
         <FilledImage src={tabletScreen} />

@@ -1,13 +1,8 @@
-import React from 'react';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
 
-import patternedBg from './SalesView/images/abstractColorBg.jpg';
-import swesinSwankOffice from './SalesView/images/swesinSwankOffice.jpg';
-import softCurveShapes from './SalesView/images/softCurveShapes.jpg';
-import softCircles from './SalesView/images/softCircles.jpg';
-import texturedGrayGradient from './SalesView/images/texturedGrayGradient.jpg'
 import grungeTexture from './SalesView/images/grungeTexture.jpg';
 
 export const theme = {}
@@ -47,6 +42,10 @@ export const BodyOuterContainer = styled(OuterContainerBase)<rgba>`
 export const StyledAppBar = withStyles({
   root: { backgroundColor: '#111' }
 })(AppBar);
+
+export const StyledButton = withStyles({
+  root: { backgroundColor: 'rgb(45, 130, 183)' }
+})(Button);
 
 export const FlexRow = styled.div`
 display: flex;

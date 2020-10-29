@@ -54,12 +54,6 @@ export default () => (
   </BodyOuterContainer>
 )
 
-const OuterContainer = styled.section`
-  width: 100vw;
-  border: 2px dashed green;
-
-`;
-
 const FaqBlock = styled.div`
 
 `;

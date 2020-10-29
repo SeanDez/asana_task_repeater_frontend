@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
 
 import AuthNav from '../NavMenu/AuthNav';

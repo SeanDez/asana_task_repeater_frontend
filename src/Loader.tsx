@@ -1,12 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 export default () => (
-  <CenteredDiv>
-    <p>THE LOADER GOES HERE</p>
-  </CenteredDiv>
+  <div style={{ width: '100vw', height: "100vh", border: '2px dashed green' }}>
+    <CircularProgress
+      style={{ margin: '50vh 50vw' }}
+    />
+  </div>
 );
-
-const CenteredDiv = styled.div`
-  margin: auto auto;
-`;

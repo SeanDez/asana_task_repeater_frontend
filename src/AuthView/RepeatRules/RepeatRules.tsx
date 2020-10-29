@@ -14,7 +14,6 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import Cookies from 'js-cookie';
-import { DeleteForeverOutlined } from '@material-ui/icons';
 
 const { REACT_APP_HTTPS_BACKEND_DOMAIN } = process.env as { [key: string]: string };
 const asana_email_encrypted = Cookies.get('asana_email_encrypted')!;
