@@ -5,7 +5,7 @@
 
 FROM node:14.16.1
 
-ENV NODE_ENV=production
+ENV NODE_ENV=development
 
 # standard app directory
 RUN apt update && mkdir -p /usr/src/app
@@ -16,8 +16,25 @@ COPY ./init.sh /usr/src
 WORKDIR /usr/src/app
 
 # runs bash script
-# copies git repo to docker image
-RUN chmod +x ../init.sh
-ENTRYPOINT ["../init.sh"]
+# unlike ENTRYPOINT, this will add build directory to the docker image
+# ENTRYPOINT made it part of container(!)
+# extra space is negated by the following stage
+RUN chmod +x ../init.sh && /bin/bash ../init.sh
 
-EXPOSE 3000 80
+
+#### Start next stage
+# Run the nginx image, tell it to serve the build folder from stage 0 (above)
+
+#:latest assumed
+FROM nginx
+
+WORKDIR /var/www/html
+
+COPY --from=0 /usr/src/app/asana_task_repeater_frontend/build .
+# including filename in copy path overwrites
+COPY ./nginx.conf /etc/nginx/nginx.conf
+
+EXPOSE 80
+
+# CMD also works but ENTRYPOINT makes sure it works
+ENTRYPOINT ["nginx","-g","daemon off;"]

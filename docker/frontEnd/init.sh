@@ -17,7 +17,8 @@ echo 'running: npm run build'
 npm run build
 echo 'build successful ====='
 
-# dev server
-npm start
+# install nginx
+
+# move build folder contents into /var/www/html
 
 
